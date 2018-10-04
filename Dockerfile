@@ -54,27 +54,3 @@ RUN  useradd ros && echo "ros:ros" | chpasswd && adduser ros sudo
 RUN usermod -a -G dialout ros
 
 RUN mkdir /var/run/sshd
-
-
-# And, as that user...
-USER ros
-
-# HOME needs to be set explicitly. Without it, the HOME environment variable is
-# set to "/"
-#RUN HOME=/home/ros rosdep update
-
-# Create a ROS workspace for the ROS user.
-RUN mkdir -p /home/ros/workspace/src
-RUN /bin/bash -c '. /opt/ros/kinetic/setup.bash; catkin_init_workspace /home/ros/workspace/src'
-RUN /bin/bash -c '. /opt/ros/kinetic/setup.bash; cd /home/ros/workspace; catkin_make'
-
-#RUN mkdir -p /home/ros/Desktop
-
-
-# nvidia-container-runtime
-ENV NVIDIA_VISIBLE_DEVICES \
-    ${NVIDIA_VISIBLE_DEVICES:-all}
-ENV NVIDIA_DRIVER_CAPABILITIES \
-    ${NVIDIA_DRIVER_CAPABILITIES:+$NVIDIA_DRIVER_CAPABILITIES,}graphics
-
-
