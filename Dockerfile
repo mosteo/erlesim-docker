@@ -138,6 +138,7 @@ RUN ["/bin/bash", "-c", "source /home/ros/workspace/devel/setup.bash && cd /home
 
 # Download Gazebo models
 RUN mkdir -p /home/ros/.gazebo/models && cd /home/ros && git clone https://github.com/erlerobot/erle_gazebo_models && mv erle_gazebo_models/* /home/ros/.gazebo/models && rm -r erle_gazebo_models
+RUN cp -r /home/ros/.gazebo /root
 
 # nvidia-container-runtime
 ENV NVIDIA_VISIBLE_DEVICES \
