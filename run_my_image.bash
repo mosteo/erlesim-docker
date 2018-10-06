@@ -13,14 +13,14 @@ then
     chmod a+r $XAUTH
 fi
 
-docker run -it \
+docker run -it --expose=1000-60000 \
     --env="DISPLAY" \
     --env="QT_X11_NO_MITSHM=1" \
     --volume="/tmp/.X11-unix:/tmp/.X11-unix:rw" \
     -env="XAUTHORITY=$XAUTH" \
     --volume="$XAUTH:$XAUTH" \
     --runtime=nvidia \
-    ros-kinetic-gazebo7 \
+    ros-erle-gazebo \
     bash
 
 xhost -local:root
