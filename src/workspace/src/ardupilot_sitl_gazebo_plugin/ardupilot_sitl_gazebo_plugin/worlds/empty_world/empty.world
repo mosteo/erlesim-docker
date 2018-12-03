@@ -1,0 +1,159 @@
+<?xml version="1.0" ?>
+<sdf version="1.4">
+  <world name="vrc_task_1">
+    <!-- place user camera -->
+
+
+
+   <model name='ground_plane'>
+	  <pose>250 17 0 0 0 0</pose>
+      <static>1</static>
+      <link name='link'>
+        <collision name='collision'>
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>500 40</size>
+            </plane>
+          </geometry>
+          <surface>
+            <contact>
+              <collide_bitmask>65535</collide_bitmask>
+              <ode/>
+            </contact>
+            <friction>
+              <ode>
+                <mu>100</mu>
+                <mu2>50</mu2>
+              </ode>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <visual name='visual'>
+          <cast_shadows>0</cast_shadows>
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>500 40</size>
+            </plane>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Grey</name>
+            </script>
+          </material>
+        </visual>
+        <self_collide>0</self_collide>
+        <kinematic>0</kinematic>
+      </link>
+    </model>
+    <light name='user_point_light_0' type='point'>
+      <pose frame=''>20 0 2 0 -0 0</pose>
+      <diffuse>0.5 0.5 0.5 1</diffuse>
+      <specular>0.1 0.1 0.1 1</specular>
+      <attenuation>
+        <range>20</range>
+        <constant>0.5</constant>
+        <linear>0.01</linear>
+        <quadratic>0.001</quadratic>
+      </attenuation>
+      <cast_shadows>0</cast_shadows>
+      <direction>0 0 -1</direction>
+    </light>
+    <light name='user_point_light_1' type='point'>
+      <pose frame=''>120 0 2 0 -0 0</pose>
+      <diffuse>0.5 0.5 0.5 1</diffuse>
+      <specular>0.1 0.1 0.1 1</specular>
+      <attenuation>
+        <range>20</range>
+        <constant>0.5</constant>
+        <linear>0.01</linear>
+        <quadratic>0.001</quadratic>
+      </attenuation>
+      <cast_shadows>0</cast_shadows>
+      <direction>0 0 -1</direction>
+    </light>
+    
+    <light name='user_point_light_2' type='point'>
+      <pose frame=''>220 0 2 0 -0 0</pose>
+      <diffuse>0.5 0.5 0.5 1</diffuse>
+      <specular>0.1 0.1 0.1 1</specular>
+      <attenuation>
+        <range>20</range>
+        <constant>0.5</constant>
+        <linear>0.01</linear>
+        <quadratic>0.001</quadratic>
+      </attenuation>
+      <cast_shadows>0</cast_shadows>
+      <direction>0 0 -1</direction>
+    </light>
+
+
+
+<!--
+    <include>
+      <uri>model://ground_plane</uri>
+    </include>
+-->
+    <include>
+      <uri>model://somport</uri>
+      <pose>0 0 0 0 0 0</pose>
+    </include>
+
+<!--
+    <include>
+      <uri>model://fast_food</uri>
+        <pose>0 -8 0 0 -0 3.14</pose>
+    </include>
+    <include>
+      <uri>model://house_2</uri>
+        <pose>-9 0 0 0 -0 -1.5707</pose>
+    </include>
+
+    <include>
+      <uri>model://sample_wall2</uri>
+      <static>true</static>
+      <name>sample_wall2_1</name>
+      <pose>6 5 0 0 -0 0</pose>
+    </include>
+
+    <road name="main_street">
+      <width>1</width>
+      <point>0 0 0.01</point>
+      <point>16 0 0.01</point>
+      <point>17 -1 0.01</point>
+      <point>17 -6 0.01</point>
+    </road>
+
+    <model name ='sphere'>
+        <pose>1 0 0 0 0 0</pose>
+        <link name ='link'>
+          <pose>-1 -1 .5 0 0 0</pose>
+          <collision name ='collision'>
+            <geometry>
+              <sphere><radius>0.5</radius></sphere>
+            </geometry>
+          </collision>
+          <visual name ='visual'>
+            <geometry>
+              <sphere><radius>0.5</radius></sphere>
+            </geometry>
+          </visual>
+        </link>
+    </model>
+-->
+    <!-- TODO: TRANSFORM IT INTO A VARIABLE DEFINED IN THE .launch FILE
+         OR ELSE WE WILL ALWAYS FORGET IT IS HERE !!! -->
+
+
+    <plugin name="ardupilot_sitl_gazebo_plugin" filename="libardupilot_sitl_gazebo_plugin.so">
+    <UAV_MODEL>erlecopter</UAV_MODEL>
+    </plugin>
+  </world>
+</sdf>
