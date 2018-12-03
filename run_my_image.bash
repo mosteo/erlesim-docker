@@ -20,7 +20,7 @@ docker run -it --expose=1000-60000 \
     -env="XAUTHORITY=$XAUTH" \
     --volume="$XAUTH:$XAUTH" \
     --runtime=nvidia \
-    ros-erle-gazebo \
+    erlesim-docker \
     bash
 
 xhost -local:root
