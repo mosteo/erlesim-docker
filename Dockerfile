@@ -93,38 +93,37 @@ RUN /bin/bash -c '. /opt/ros/kinetic/setup.bash; cd /home/ros/workspace; catkin_
 RUN mkdir -p /home/ros/Desktop
 RUN echo "source /home/ros/workspace/devel/setup.bash" >> ~/.bashrc
 
-# Download and Install ArUco 1.3.0
+# Download workspace and tools
+RUN cd /tmp && git clone https://github.com/mosteo/erlesim-docker.git
+
+# Copy and Install ArUco 1.3.0
 RUN mkdir -p /home/ros/Downloads
-RUN wget http://webdiis.unizar.es/~riazuelo/data/aruco-1.3.0.tgz -P /home/ros/Downloads
-RUN tar -xvzf /home/ros/Downloads/aruco-1.3.0.tgz -C /home/ros/Downloads/
+RUN cp -r /tmp/erlesim-docker/src/aruco-1.3.0 /home/ros/Downloads
 RUN mkdir /home/ros/Downloads/aruco-1.3.0/build && cd /home/ros/Downloads/aruco-1.3.0/build && cmake .. && make && echo ros | sudo -S make install
 
-# Compile a specific branch of ardupilot
-RUN mkdir -p /home/ros/simulation && cd /home/ros/simulation && git clone https://github.com/erlerobot/ardupilot -b gazebo
+# Copy a specific branch of ardupilot
+RUN cp -r /tmp/erlesim-docker/src/ardupilot /home/ros/simulation
 RUN cd /home/ros/simulation/ardupilot && make
 
-# Getting latest version of JSBSim (optional step)
-RUN cd /home/ros/simulation && git clone git://github.com/tridge/jsbsim.git 
+# Copy latest version of JSBSim (optional step)
+RUN cp -r /tmp/erlesim-docker/src/jsbsim /home/ros/simulation
 RUN cd /home/ros/simulation/jsbsim && ./autogen.sh --enable-libraries && make -j2 && echo ros | sudo -S make install
 
 # Download ROS workspace for the ROS user.
-RUN mkdir -p /home/ros/workspace/src
-RUN cd /home/ros/workspace/src && git clone https://github.com/catkin/catkin_simple.git
-RUN cd /home/ros/workspace/src && git clone https://github.com/ethz-asl/glog_catkin.git
+RUN cp -r /tmp/erlesim-docker/src/catkin_simple /home/ros/workspace/src
+RUN cp -r /tmp/erlesim-docker/src/glog_catkin /home/ros/workspace/src
 RUN mv /home/ros/workspace/src/glog_catkin/fix-unused-typedef-warning.patch /home/ros/workspace/src
 RUN ["/bin/bash", "-c", "source /home/ros/workspace/devel/setup.bash && cd /home/ros/workspace && catkin_make"]
 RUN rm /home/ros/workspace/src/fix-unused-typedef-warning.patch
-RUN cd /home/ros/workspace/src && git clone https://github.com/erlerobot/ardupilot_sitl_gazebo_plugin 
-RUN cd /home/ros/workspace/src && git clone https://github.com/tu-darmstadt-ros-pkg/hector_gazebo/ 
-RUN cd /home/ros/workspace/src && git clone https://github.com/erlerobot/rotors_simulator -b sonar_plugin 
-RUN cd /home/ros/workspace/src && git clone https://github.com/PX4/mav_comm.git 
-RUN cd /home/ros/workspace/src && git clone https://github.com/erlerobot/mavros.git
-RUN cd /home/ros/workspace/src && git clone https://github.com/ros-simulation/gazebo_ros_pkgs.git -b indigo-devel
-RUN cd /home/ros/workspace/src && git clone https://github.com/erlerobot/gazebo_cpp_examples
-RUN cd /home/ros/workspace/src && git clone https://github.com/erlerobot/gazebo_python_examples
-RUN wget http://webdiis.unizar.es/~riazuelo/data/drcsim.tgz -P /home/ros/workspace/src
-RUN tar -xvzf /home/ros/workspace/src/drcsim.tgz -C /home/ros/workspace/src
-RUN rm /home/ros/workspace/src/drcsim.tgz
+RUN cp -r /tmp/erlesim-docker/src/ardupilot_sitl_gazebo_plugin /home/ros/workspace/src
+RUN cp -r /tmp/erlesim-docker/src/hector_gazebo /home/ros/workspace/src
+RUN cp -r /tmp/erlesim-docker/src/rotors_simulator /home/ros/workspace/src
+RUN cp -r /tmp/erlesim-docker/src/mav_comm /home/ros/workspace/src
+RUN cp -r /tmp/erlesim-docker/src/mavros /home/ros/workspace/src
+RUN cp -r /tmp/erlesim-docker/src/gazebo_ros_pkgs /home/ros/workspace/src
+RUN cp -r /tmp/erlesim-docker/src/gazebo_cpp_examples /home/ros/workspace/src
+RUN cp -r /tmp/erlesim-docker/src/gazebo_python_examples /home/ros/workspace/src
+RUN cp -r /tmp/erlesim-docker/src/drcsim /home/ros/workspace/src
 
 # Install Gazebo using Ubuntu packages
 RUN echo ros | sudo -S sh -c 'echo "deb http://packages.osrfoundation.org/gazebo/ubuntu-stable `lsb_release -cs` main" > /etc/apt/sources.list.d/gazebo-stable.list'
@@ -137,13 +136,15 @@ RUN ["/bin/bash", "-c", "source /home/ros/workspace/devel/setup.bash && cd /home
 RUN ["/bin/bash", "-c", "source /home/ros/workspace/devel/setup.bash && cd /home/ros/workspace && catkin_make  -j 4"]
 
 # Download Gazebo models
-RUN mkdir -p /home/ros/.gazebo/models && cd /home/ros && git clone https://github.com/erlerobot/erle_gazebo_models && mv erle_gazebo_models/* /home/ros/.gazebo/models && rm -r erle_gazebo_models
-RUN cp -r /home/ros/.gazebo /root
+RUN cp -r /tmp/erlesim-docker/src/.gazebo /home/ros
+RUN cp -r /tmp/erlesim-docker/src/.gazebo /root
+
+# Remove temporal files
+RUN rm -r /tmp/erlesim-docker/
 
 # nvidia-container-runtime
 ENV NVIDIA_VISIBLE_DEVICES \
     ${NVIDIA_VISIBLE_DEVICES:-all}
 ENV NVIDIA_DRIVER_CAPABILITIES \
     ${NVIDIA_DRIVER_CAPABILITIES:+$NVIDIA_DRIVER_CAPABILITIES,}graphics
-
 
