@@ -102,6 +102,7 @@ RUN cp -r /tmp/erlesim-docker/src/aruco-1.3.0 /home/ros/Downloads
 RUN mkdir /home/ros/Downloads/aruco-1.3.0/build && cd /home/ros/Downloads/aruco-1.3.0/build && cmake .. && make && echo ros | sudo -S make install
 
 # Copy a specific branch of ardupilot
+RUN mkdir -p /home/ros/simulation
 RUN cp -r /tmp/erlesim-docker/src/ardupilot /home/ros/simulation
 RUN cd /home/ros/simulation/ardupilot && make
 
