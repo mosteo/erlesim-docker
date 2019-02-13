@@ -107,48 +107,46 @@ RUN cp -r /tmp/erlesim-docker/src/ardupilot /home/ros/simulation/
 RUN cd /home/ros/simulation/ardupilot && make
 
 # Copy latest version of JSBSim (optional step)
-RUN cp -r /tmp/erlesim-docker/src/jsbsim /home/ros/simulation/
-RUN ls -ila /home/ros/simulation/jsbsim 
-#&& ./autogen.sh --enable-libraries 
-# ./autogen.sh 
-#&& make -j2 && echo ros | sudo -S make install
+#RUN cp -r /tmp/erlesim-docker/src/jsbsim /home/ros/simulation/
+#RUN ls -ila /home/ros/simulation/jsbsim && ./autogen.sh --enable-libraries 
+# ./autogen.sh && make -j2 && echo ros | sudo -S make install
 
 # Download ROS workspace for the ROS user.
-#RUN cp -r /tmp/erlesim-docker/src/workspace/src/catkin_simple /home/ros/workspace/src
-#RUN cp -r /tmp/erlesim-docker/src/workspace/src/glog_catkin /home/ros/workspace/src
-#RUN mv /home/ros/workspace/src/glog_catkin/fix-unused-typedef-warning.patch /home/ros/workspace/src
-#RUN ["/bin/bash", "-c", "source /home/ros/workspace/devel/setup.bash && cd /home/ros/workspace && catkin_make"]
-#RUN rm /home/ros/workspace/src/fix-unused-typedef-warning.patch
-#RUN cp -r /tmp/erlesim-docker/src/workspace/src/ardupilot_sitl_gazebo_plugin /home/ros/workspace/src
-#RUN cp -r /tmp/erlesim-docker/src/workspace/src/hector_gazebo /home/ros/workspace/src
-#RUN cp -r /tmp/erlesim-docker/src/workspace/src/rotors_simulator /home/ros/workspace/src
-#RUN cp -r /tmp/erlesim-docker/src/workspace/src/mav_comm /home/ros/workspace/src
-#RUN cp -r /tmp/erlesim-docker/src/workspace/src/mavros /home/ros/workspace/src
-#RUN cp -r /tmp/erlesim-docker/src/workspace/src/gazebo_ros_pkgs /home/ros/workspace/src
-#RUN cp -r /tmp/erlesim-docker/src/workspace/src/gazebo_cpp_examples /home/ros/workspace/src
-#RUN cp -r /tmp/erlesim-docker/src/workspace/src/gazebo_python_examples /home/ros/workspace/src
-#RUN cp -r /tmp/erlesim-docker/src/workspace/src/drcsim /home/ros/workspace/src
+RUN cp -r /tmp/erlesim-docker/src/workspace/src/catkin_simple /home/ros/workspace/src
+RUN cp -r /tmp/erlesim-docker/src/workspace/src/glog_catkin /home/ros/workspace/src
+RUN mv /home/ros/workspace/src/glog_catkin/fix-unused-typedef-warning.patch /home/ros/workspace/src
+RUN ["/bin/bash", "-c", "source /home/ros/workspace/devel/setup.bash && cd /home/ros/workspace && catkin_make"]
+RUN rm /home/ros/workspace/src/fix-unused-typedef-warning.patch
+RUN cp -r /tmp/erlesim-docker/src/workspace/src/ardupilot_sitl_gazebo_plugin /home/ros/workspace/src
+RUN cp -r /tmp/erlesim-docker/src/workspace/src/hector_gazebo /home/ros/workspace/src
+RUN cp -r /tmp/erlesim-docker/src/workspace/src/rotors_simulator /home/ros/workspace/src
+RUN cp -r /tmp/erlesim-docker/src/workspace/src/mav_comm /home/ros/workspace/src
+RUN cp -r /tmp/erlesim-docker/src/workspace/src/mavros /home/ros/workspace/src
+RUN cp -r /tmp/erlesim-docker/src/workspace/src/gazebo_ros_pkgs /home/ros/workspace/src
+RUN cp -r /tmp/erlesim-docker/src/workspace/src/gazebo_cpp_examples /home/ros/workspace/src
+RUN cp -r /tmp/erlesim-docker/src/workspace/src/gazebo_python_examples /home/ros/workspace/src
+RUN cp -r /tmp/erlesim-docker/src/workspace/src/drcsim /home/ros/workspace/src
 
 # Install Gazebo using Ubuntu packages
-#RUN echo ros | sudo -S sh -c 'echo "deb http://packages.osrfoundation.org/gazebo/ubuntu-stable `lsb_release -cs` main" > /etc/apt/sources.list.d/gazebo-stable.list'
-#RUN ["/bin/bash", "-c", "set -o pipefail && wget -O - http://packages.osrfoundation.org/gazebo.key | sudo -S apt-key add -"]
-#RUN echo ros | sudo -S apt-get update
-#RUN echo ros | sudo -S apt-get remove .*gazebo.* '.*sdformat.*' '.*ignition-math.*' && echo ros |  sudo -S apt-get update && echo ros | sudo -S apt-get install gazebo7 libgazebo7-dev -y
+RUN echo ros | sudo -S sh -c 'echo "deb http://packages.osrfoundation.org/gazebo/ubuntu-stable `lsb_release -cs` main" > /etc/apt/sources.list.d/gazebo-stable.list'
+RUN ["/bin/bash", "-c", "set -o pipefail && wget -O - http://packages.osrfoundation.org/gazebo.key | sudo -S apt-key add -"]
+RUN echo ros | sudo -S apt-get update
+RUN echo ros | sudo -S apt-get remove .*gazebo.* '.*sdformat.*' '.*ignition-math.*' && echo ros |  sudo -S apt-get update && echo ros | sudo -S apt-get install gazebo7 libgazebo7-dev -y
 
 # Compile the workspace
-#RUN ["/bin/bash", "-c", "source /home/ros/workspace/devel/setup.bash && cd /home/ros/workspace && catkin_make  --pkg mav_msgs mavros_msgs gazebo_msgs"]
-#RUN ["/bin/bash", "-c", "source /home/ros/workspace/devel/setup.bash && cd /home/ros/workspace && catkin_make  -j 4"]
+RUN ["/bin/bash", "-c", "source /home/ros/workspace/devel/setup.bash && cd /home/ros/workspace && catkin_make  --pkg mav_msgs mavros_msgs gazebo_msgs"]
+RUN ["/bin/bash", "-c", "source /home/ros/workspace/devel/setup.bash && cd /home/ros/workspace && catkin_make  -j 4"]
 
 # Download Gazebo models
-#RUN cp -r /tmp/erlesim-docker/src/.gazebo /home/ros
-#RUN cp -r /tmp/erlesim-docker/src/.gazebo /root
+RUN cp -r /tmp/erlesim-docker/src/.gazebo /home/ros
+RUN cp -r /tmp/erlesim-docker/src/.gazebo /root
 
 # Remove temporal files
-#RUN rm -r /tmp/erlesim-docker/
+RUN rm -r /tmp/erlesim-docker/
 
 # nvidia-container-runtime
-#ENV NVIDIA_VISIBLE_DEVICES \
-#    ${NVIDIA_VISIBLE_DEVICES:-all}
-#ENV NVIDIA_DRIVER_CAPABILITIES \
-#    ${NVIDIA_DRIVER_CAPABILITIES:+$NVIDIA_DRIVER_CAPABILITIES,}graphics
+ENV NVIDIA_VISIBLE_DEVICES \
+    ${NVIDIA_VISIBLE_DEVICES:-all}
+ENV NVIDIA_DRIVER_CAPABILITIES \
+    ${NVIDIA_DRIVER_CAPABILITIES:+$NVIDIA_DRIVER_CAPABILITIES,}graphics
 
